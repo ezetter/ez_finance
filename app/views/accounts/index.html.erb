@@ -1,9 +1,11 @@
 <% provide(:title, "Accounts") %>
+<%= form_tag controller: "accounts", action: "bulk_update" do %>
+
 <div class="table-responsive">
     <table class="table table-condensed" width="500">
         <thead>
         <tr>
-            <th class="col-sm-2">Account Name</th>
+            <th class="col-sm-1">Account Name</th>
             <th class="col-sm-1">Value</th>
             <th class="col-sm-1"></th>
         </tr>
@@ -12,10 +14,14 @@
         <% @accounts.each do |account| %>
             <tr>
                 <td><%= link_to account.name, account %></td>
-                <td>$<%= account.value %></td>
+                <td><%= label :value, "$" %>
+                    <div style="display: inline-block;"><%= text_field :value, account.id, :value => account.value%></div></td>
                 <td><%= link_to "Edit", edit_account_path(account) %> <%= link_to "Remove", account, method: :delete, data: {confirm: "Are you sure?"} %></td>
             </tr>
         <% end %>
+        <tr><td></td><td><p class="total">Total: $<%= @total %></p></td><td></td></tr>
         </tbody>
     </table>
 </div>
+    <%= submit_tag "Update Values" , class: "btn btn-primary" %>
+<% end %>

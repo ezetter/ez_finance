@@ -15,6 +15,7 @@ class AccountsController < ApplicationController
 
   def index
     @accounts = Account.all
+    @total = @accounts.inject(0) { |sum, acct| sum + acct.value}
   end
 
   def show
@@ -39,6 +40,16 @@ class AccountsController < ApplicationController
   def destroy
     account = Account.find(params[:id])
     account.delete
+  end
+
+  def bulk_update
+    params[:value].each do |k, v|
+      account = Account.find(k)
+      account.value = v.to_i
+      account.save
+    end
+    flash[:notice] = 'Accounts updated!'
+    redirect_to action: 'index'
   end
 
   private
