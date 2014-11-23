@@ -5,6 +5,7 @@ class AccountsController < ApplicationController
 
   def create
     @account = Account.new(account_params)
+    @account.updated = Time.new
     if @account.save
       flash[:notice] = 'Account created!'
       redirect_to action: 'index'
@@ -29,6 +30,7 @@ class AccountsController < ApplicationController
   def update
     account = Account.find(params[:id])
     account.update_attributes(account_params)
+    account.updated = Time.now
     if account.save
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
@@ -45,8 +47,11 @@ class AccountsController < ApplicationController
   def bulk_update
     params[:value].each do |k, v|
       account = Account.find(k)
-      account.value = v.to_i
-      account.save
+      unless k.to_i == v.to_i
+        account.value = v.to_i
+        account.updated = Time.now
+        account.save
+      end
     end
     flash[:notice] = 'Accounts updated!'
     redirect_to action: 'index'
