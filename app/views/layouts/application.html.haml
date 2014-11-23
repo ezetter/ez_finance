@@ -1,0 +1,14 @@
+!!! 5
+%html
+  %head
+    %meta{ charset: 'utf-8' }
+    %title EZ Finance
+    = csrf_meta_tag
+    = stylesheet_link_tag 'application', media: 'all'
+    = yield :head
+  %body
+    - if flash.notice
+      .notice= flash.notice
+    - if flash.alert
+      .notice.alert= flash.alert
+    = yield
