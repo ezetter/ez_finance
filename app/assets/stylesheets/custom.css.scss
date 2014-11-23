@@ -147,6 +147,18 @@ input {
   height: auto !important;
 }
 
+/* Users index */
+
+.accounts {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 5px 0;
+    border-bottom: 1px solid $gray-lighter;
+  }
+}
+
 /* miscellaneous */
 
 .debug_dump {
