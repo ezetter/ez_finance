@@ -4,9 +4,9 @@ class AccountsController < ApplicationController
   end
 
   def create
-    @account = Account.new(account_params)
-    @account.updated = Time.new
-    if @account.save
+    @account = Account.new
+    value_int, value_frac = value_parts(params[:account][:value])
+    if set_account_fields(@account, value_int, value_frac, params[:account][:name]).save
       flash[:notice] = 'Account created!'
       redirect_to action: 'index'
     else
@@ -15,7 +15,7 @@ class AccountsController < ApplicationController
   end
 
   def index
-    @accounts = Account.all
+    @accounts = Account.all.sort
     @total = @accounts.inject(0) { |sum, acct| sum + acct.value}
   end
 
@@ -29,9 +29,8 @@ class AccountsController < ApplicationController
 
   def update
     account = Account.find(params[:id])
-    account.update_attributes(account_params)
-    account.updated = Time.now
-    if account.save
+    value_int, value_frac = value_parts(params[:account][:value])
+    if set_account_fields(account, value_int, value_frac, params[:account][:name]).save
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
     else
@@ -47,10 +46,9 @@ class AccountsController < ApplicationController
   def bulk_update
     params[:value].each do |k, v|
       account = Account.find(k)
-      unless k.to_i == v.to_i
-        account.value = v.to_i
-        account.updated = Time.now
-        account.save
+      value_int, value_frac = value_parts(v)
+      unless account.value == value_int && account.value_fractional == value_frac
+        set_account_fields(account, value_int, value_frac).save
       end
     end
     flash[:notice] = 'Accounts updated!'
@@ -62,4 +60,18 @@ class AccountsController < ApplicationController
   def account_params
     params.require(:account).permit(:name, :value)
   end
+
+  def value_parts(value_string)
+    value_parts = value_string.gsub(',','').split('.')
+    return value_parts[0].to_i, value_parts[1].to_i
+  end
+
+  def set_account_fields(account, value_int, value_frac, account_name = account.name)
+    account.value = value_int
+    account.value_fractional = value_frac
+    account.updated = Time.now
+    account.name = account_name
+    account
+  end
+
 end
