@@ -79,11 +79,13 @@ class AccountsController < ApplicationController
   end
 
   def save_history(account)
-    AccountHistory
-    history = AccountHistory.new
-    history.account = account
+    history = AccountHistory.where('date_changed=? AND account_id=?', account.updated, account)[0]
+    unless history
+      history = AccountHistory.new
+      history.account = account
+      history.date_changed = account.updated
+    end
     history.historical_value = "#{account.value}.#{account.value_fractional}".to_f
-    history.date_changed = account.updated
     history.save
   end
 
