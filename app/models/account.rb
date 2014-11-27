@@ -7,7 +7,7 @@ class Account < ActiveRecord::Base
 
       number_with_precision(value, :precision => 2, :delimiter => ',')
     else
-      number_with_precision(self.value, :delimiter => ',')
+      number_with_precision(self.value, :precision => 0, :delimiter => ',')
     end
   end
 

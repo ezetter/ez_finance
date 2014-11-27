@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
   def create
     @account = Account.new
     value_int, value_frac = value_parts(params[:account][:value])
-    if set_account_fields(@account, value_int, value_frac, params[:account][:name]).save
+    if save_account(@account, value_int, value_frac, params[:account][:name]).save
       flash[:notice] = 'Account created!'
       redirect_to action: 'index'
     else
@@ -30,7 +30,7 @@ class AccountsController < ApplicationController
   def update
     account = Account.find(params[:id])
     value_int, value_frac = value_parts(params[:account][:value])
-    if set_account_fields(account, value_int, value_frac, params[:account][:name]).save
+    if save_account(account, value_int, value_frac, params[:account][:name]).save
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
     else
@@ -48,7 +48,7 @@ class AccountsController < ApplicationController
       account = Account.find(k)
       value_int, value_frac = value_parts(v)
       unless account.value == value_int && account.value_fractional == value_frac
-        set_account_fields(account, value_int, value_frac).save
+        save_account(account, value_int, value_frac)
       end
     end
     flash[:notice] = 'Accounts updated!'
@@ -66,12 +66,25 @@ class AccountsController < ApplicationController
     return value_parts[0].to_i, value_parts[1].to_i
   end
 
-  def set_account_fields(account, value_int, value_frac, account_name = account.name)
+  def save_account(account, value_int, value_frac, account_name = account.name)
     account.value = value_int
     account.value_fractional = value_frac
     account.updated = Time.now
     account.name = account_name
-    account
+    result = account.save
+    if result
+      save_history(account)
+    end
+    result
+  end
+
+  def save_history(account)
+    AccountHistory
+    history = AccountHistory.new
+    history.account = account
+    history.historical_value = "#{account.value}.#{account.value_fractional}".to_f
+    history.date_changed = account.updated
+    history.save
   end
 
 end
