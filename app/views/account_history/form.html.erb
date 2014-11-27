@@ -1,0 +1,16 @@
+<% provide(:title, 'Account History') %>
+<h1>View Account History</h1>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <%= form_tag(controller: "account_history", action: "view", method: "get") do  %>
+            <%= label_tag :intervals, "Number of Intervals"%>
+            <%= text_field_tag :intervals %>
+
+            <%= label_tag :interval_size, "Interval Size" %>
+            <%= text_field_tag :interval_size %>
+
+            <%= submit_tag "View History", class: "btn btn-primary" %>
+        <% end %>
+    </div>
+</div>
