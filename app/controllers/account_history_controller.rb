@@ -1,7 +1,4 @@
 class AccountHistoryController < ApplicationController
-  def show
-
-  end
 
   def index
     all_history = AccountHistory.where('date_changed IS NOT NULL').sort_by { |h| h.id }
