@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
   def create
     @account = Account.new
     value_int, value_frac = value_parts(params[:account][:value])
-    if save_account(@account, value_int, value_frac, params[:account][:name]).save
+    if save_account(@account, value_int, value_frac, params[:account][:name])
       flash[:notice] = 'Account created!'
       redirect_to action: 'index'
     else
@@ -41,6 +41,8 @@ class AccountsController < ApplicationController
   def destroy
     account = Account.find(params[:id])
     account.delete
+    delete_history(account)
+    redirect_to action: 'index'
   end
 
   def bulk_update
@@ -89,4 +91,10 @@ class AccountsController < ApplicationController
     history.save
   end
 
+  def delete_history(account)
+    history = AccountHistory.where('date_changed=? AND account_id=?', account.updated, account)
+    history.each do |h|
+      h.delete
+    end
+  end
 end
