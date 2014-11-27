@@ -30,7 +30,7 @@ class AccountsController < ApplicationController
   def update
     account = Account.find(params[:id])
     value_int, value_frac = value_parts(params[:account][:value])
-    if save_account(account, value_int, value_frac, params[:account][:name]).save
+    if save_account(account, value_int, value_frac, params[:account][:name])
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
     else
