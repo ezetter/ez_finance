@@ -10,11 +10,11 @@
             <%= label_tag :interval_size, "Interval Size" %>
             <%= number_field_tag :interval_size %>
 
-            <%= select_tag(:account_id, options_for_select(@accounts)) %>
+            <%= select_tag(:account_id, options_for_select(@accounts), {:prompt => 'All accounts'}) %>
 
-            <%= select_tag :account_type_id, options_for_select(@account_types) %>
+            <%= select_tag :account_type_id, options_for_select(@account_types), {:prompt => 'All types'} %>
 
-            <%= select_tag :account_owner_id, options_for_select(@account_owners) %>
+            <%= select_tag :account_owner_id, options_for_select(@account_owners), {:prompt => 'All owners'} %>
 
             <%= submit_tag "View History", class: "btn btn-primary" %>
         <% end %>
