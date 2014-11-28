@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   resources :accounts
   resources :account_types
+  resources :account_owners
 
   get 'account_history/form' => 'account_history#form'
 

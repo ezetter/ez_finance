@@ -2,6 +2,7 @@ class Account < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
 
   belongs_to :account_type
+  belongs_to :account_owner
 
   def displayed_value
     if self.value_fractional > 0

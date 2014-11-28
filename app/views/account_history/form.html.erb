@@ -14,6 +14,8 @@
 
             <%= select_tag :account_type_id, options_for_select(@account_types) %>
 
+            <%= select_tag :account_owner_id, options_for_select(@account_owners) %>
+
             <%= submit_tag "View History", class: "btn btn-primary" %>
         <% end %>
     </div>

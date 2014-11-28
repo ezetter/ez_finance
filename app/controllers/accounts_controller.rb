@@ -1,8 +1,9 @@
 class AccountsController < ApplicationController
-  before_filter :init_account_types, :only => [:new, :edit, :index]
+  before_filter :init_selections, :only => [:new, :edit, :index]
 
-  def init_account_types
+  def init_selections
     @account_types = AccountType.all.sort_by { |at| at.description }
+    @account_owners = AccountOwner.all.sort_by { |at| at.description }
   end
 
   def new
@@ -36,9 +37,6 @@ class AccountsController < ApplicationController
   def update
     account = Account.find(params[:id])
     value_int, value_frac = value_parts(params[:account][:value])
-    if params[:account][:account_type_id]
-      account.account_type = AccountType.find(params[:account][:account_type_id])
-    end
     if save_account(account, value_int, value_frac, params[:account][:name])
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
@@ -82,6 +80,13 @@ class AccountsController < ApplicationController
     account.value_fractional = value_frac
     account.updated = Time.now
     account.name = account_name
+    if params[:account][:account_type_id]
+      account.account_type = AccountType.find(params[:account][:account_type_id])
+    end
+    if params[:account][:account_owner_id]
+      account.account_owner = AccountOwner.find(params[:account][:account_owner_id])
+    end
+
     result = account.save
     if result
       save_history(account)

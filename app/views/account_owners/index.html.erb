@@ -1,0 +1,6 @@
+<% provide(:title, 'Account Owners') %>
+
+<% @account_owners.each do |account_owner| %>
+    <h4><%= account_owner.description %>
+        <%= link_to "Edit", edit_account_owner_path(account_owner) %> <%= link_to "Delete", account_owner, method: :delete, data: {confirm: "Are you sure?"} %></h4>
+<% end %>

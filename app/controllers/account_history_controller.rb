@@ -6,6 +6,9 @@ class AccountHistoryController < ApplicationController
     @account_types = [['All accounts types', 0]]
     @account_types += AccountType.all.sort_by { |at| at.description }
                           .map {|at| [at.description, at.id]}
+    @account_owners = [['All account owners', 0]]
+    @account_owners += AccountOwner.all.sort_by { |at| at.description }
+                          .map {|at| [at.description, at.id]}
   end
 
   def view
@@ -39,6 +42,10 @@ class AccountHistoryController < ApplicationController
     unless params[:account_type_id] == '0'
       select_string += ' AND accounts.account_type_id = ?'
       query_params << params[:account_type_id]
+    end
+    unless params[:account_owner_id] == '0'
+      select_string += ' AND accounts.account_owner_id = ?'
+      query_params << params[:account_owner_id]
     end
     all_history = AccountHistory.joins(:account)
                       .where(select_string, *query_params).sort_by { |h| h.id }
