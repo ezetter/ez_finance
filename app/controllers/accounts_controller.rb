@@ -1,4 +1,10 @@
 class AccountsController < ApplicationController
+  before_filter :init_account_types, :only => [:new, :edit, :index]
+
+  def init_account_types
+    @account_types = AccountType.all.sort_by { |at| at.description }
+  end
+
   def new
     @account = Account.new
   end
@@ -30,6 +36,9 @@ class AccountsController < ApplicationController
   def update
     account = Account.find(params[:id])
     value_int, value_frac = value_parts(params[:account][:value])
+    if params[:account][:account_type_id]
+      account.account_type = AccountType.find(params[:account][:account_type_id])
+    end
     if save_account(account, value_int, value_frac, params[:account][:name])
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'

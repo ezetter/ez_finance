@@ -1,6 +1,8 @@
 class Account < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
 
+  belongs_to :account_type
+
   def displayed_value
     if self.value_fractional > 0
       value = self.value + self.value_fractional/100.0

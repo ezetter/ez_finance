@@ -40,7 +40,7 @@ class AccountHistoryController < ApplicationController
       total = all_history.select { |h| h.date_changed < q_time }.group_by { |h| h.account }
                   .map { |h| h[1].last.historical_value }.inject(:+)
       total = 0 unless total
-      @historical_totals << [q_time.strftime("%d/%m/%Y"), total]
+      @historical_totals << [q_time.strftime("%Y-%m-%d"), total]
     end
   end
 

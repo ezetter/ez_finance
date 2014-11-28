@@ -3,7 +3,18 @@
     <aside class="col-md-4">
         <section class="user_info">
             <h1>
-                <%= @account.name %> $<%= @account.value %>
+                <%= @account.name %>
+            </h1>
+            <h1>
+                Current Value:
+                $<%= number_with_precision(@account.value, :precision => 2, :delimiter => ',') %>
+            </h1>
+            <h1>
+                Account Type: <%= @account.account_type.description %>
+            </h1>
+            <h1>
+                Last Updated:
+                <%= @account.updated %>
             </h1>
         </section>
     </aside>

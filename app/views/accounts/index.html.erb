@@ -7,6 +7,7 @@
             <tr>
                 <th class="col-sm-1">Account Name</th>
                 <th class="col-sm-1">Value</th>
+                <th class="col-sm-1">Account Type</th>
                 <th class="col-sm-1">Last Updated</th>
                 <th class="col-sm-1"></th>
             </tr>
@@ -18,6 +19,9 @@
                     <td><%= label :value, "$" %>
                         <div style="display: inline-block;">
                             <%= text_field :value, account.id, :value => account.displayed_value %></div>
+                    </td>
+                    <td>
+                        <%= account.account_type.description %>
                     </td>
                     <td><%= account.updated%></td>
                     <td><%= link_to "Edit", edit_account_path(account) %> <%= link_to "Remove", account, method: :delete, data: {confirm: "Are you sure?"} %></td>
