@@ -3,6 +3,9 @@ class AccountHistoryController < ApplicationController
   def form
     @accounts = [['All accounts', 0]]
     @accounts += Account.all.sort.map {|acc| [acc.name, acc.id]}
+    @account_types = [['All accounts types', 0]]
+    @account_types += AccountType.all.sort_by { |at| at.description }
+                          .map {|at| [at.description, at.id]}
   end
 
   def view
@@ -21,18 +24,25 @@ class AccountHistoryController < ApplicationController
       account = Account.find(params[:account_id])
       @displayed = "History for account #{account.name}:"
     end
-    get_history(intervals, interval_size, params[:account_id])
+    get_history(intervals, interval_size)
   end
 
   private
 
-  def get_history(intervals, interval_size, account_id)
-    if account_id == '0'
-      all_history = AccountHistory.where('date_changed IS NOT NULL').sort_by { |h| h.id }
-    else
-      all_history = AccountHistory.where('date_changed IS NOT NULL AND account_id = ?', account_id)
-                        .sort_by { |h| h.id }
+  def get_history(intervals, interval_size)
+    select_string = 'date_changed IS NOT NULL'
+    query_params = []
+    unless params[:account_id] == '0'
+      select_string += ' AND account_id = ?'
+      query_params << params[:account_id]
     end
+    unless params[:account_type_id] == '0'
+      select_string += ' AND accounts.account_type_id = ?'
+      query_params << params[:account_type_id]
+    end
+    all_history = AccountHistory.joins(:account)
+                      .where(select_string, *query_params).sort_by { |h| h.id }
+
     end_time = Time.now.beginning_of_day
     @historical_totals = []
     (0...intervals).each do |i|

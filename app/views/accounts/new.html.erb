@@ -8,7 +8,7 @@
             <%= f.text_field :name %>
 
             <%= f.label :account_type %>
-            <%= f.select :account_type_id, options_from_collection_for_select(@account_types, "id", "description"), include_blank: true %>
+            <%= f.select :account_type_id, options_from_collection_for_select(@account_types, "id", "description") %>
 
             <%= f.label :value, "Current Value" %>
             <%= f.text_field :value %>
