@@ -80,10 +80,10 @@ class AccountsController < ApplicationController
     account.value_fractional = value_frac
     account.updated = Time.now
     account.name = account_name
-    if params[:account][:account_type_id]
+    if params[:account] && params[:account][:account_type_id]
       account.account_type = AccountType.find(params[:account][:account_type_id])
     end
-    if params[:account][:account_owner_id]
+    if params[:account] && params[:account][:account_owner_id]
       account.account_owner = AccountOwner.find(params[:account][:account_owner_id])
     end
 

@@ -16,6 +16,8 @@
 
             <%= select_tag :account_owner_id, options_for_select(@account_owners), {:prompt => 'All owners'} %>
 
+            <%= select_tag :retirement, options_for_select(@retirement_options), {:prompt => 'All'} %>
+
             <%= submit_tag "View History", class: "btn btn-primary" %>
         <% end %>
     </div>

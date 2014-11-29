@@ -1,6 +1,6 @@
 <% provide(:title, 'Account Types') %>
 
 <% @account_types.each do |account_type| %>
-    <h4><%= account_type.description %>
+    <h4><%= account_type.description %> : <%= account_type.retirement %>
         <%= link_to "Edit", edit_account_type_path(account_type) %> <%= link_to "Delete", account_type, method: :delete, data: {confirm: "Are you sure?"} %></h4>
 <% end %>
