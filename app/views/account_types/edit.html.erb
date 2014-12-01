@@ -6,10 +6,11 @@
         <%= form_for(@account_type) do |f| %>
             <%= f.label :description %>
             <%= f.text_field :description %>
-            <div style="display: inline-block;">
-                <%= f.check_box :retirement %>
+            <div class="checkbox">
+                <label>
+                    <%= f.check_box :retirement %> Retirement?
+                </label>
             </div>
-            <%= f.label :retirement, :style => 'padding-left: 20px;'%>
 
             <%= f.submit "Update Account Type", class: "btn btn-primary" %>
         <% end %>

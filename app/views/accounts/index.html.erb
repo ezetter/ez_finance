@@ -1,43 +1,52 @@
 <% provide(:title, "Accounts") %>
-<%= form_tag controller: "accounts", action: "bulk_update" do %>
+<div class="container">
+    <%= form_tag({:controller => "accounts", :action => "index"}, {:class => "form-inline", :role => "form", :method => "get"}) do %>
+        <%= select_tag(:account_type_id, options_for_select(@account_types, @selected_account_type_id), {:prompt => 'All Account Types', :class => "form-control"}) %>
+        <%= select_tag(:account_owner_id, options_for_select(@account_owners, @selected_account_owner_id), {:prompt => 'All Owners', :class => "form-control"}) %>
+        <%= select_tag(:retirement, options_for_select(@retirement_options, @selected_retirement), {:prompt => 'Retirement and Non-Retirement', :class => "form-control"}) %>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    <% end %>
+    <%= form_tag controller: "accounts", action: "bulk_update" do %>
 
-    <div class="table-responsive">
-        <table class="table table-condensed" width="500">
-            <thead>
-            <tr>
-                <th class="col-sm-1">Account Name</th>
-                <th class="col-sm-1">Value</th>
-                <th class="col-sm-1">Account Type</th>
-                <th class="col-sm-1">Account Owner</th>
-                <th class="col-sm-1">Last Updated</th>
-                <th class="col-sm-1"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @accounts.each do |account| %>
+        <div class="table-responsive">
+            <table class="table table-condensed">
+                <thead>
                 <tr>
-                    <td><%= link_to account.name, account %></td>
-                    <td><%= label :value, "$" %>
-                        <div style="display: inline-block;">
-                            <%= text_field :value, account.id, :value => account.displayed_value %></div>
-                    </td>
-                    <td>
-                        <%= account.account_type.description %>
-                    </td>
-                    <td>
-                        <%= account.account_owner.description if account.account_owner %>
-                    </td>
-                    <td><%= account.updated%></td>
-                    <td><%= link_to "Edit", edit_account_path(account) %> <%= link_to "Remove", account, method: :delete, data: {confirm: "Are you sure?"} %></td>
+                    <th class="col-sm-1">Account Name</th>
+                    <th class="col-sm-1">Value</th>
+                    <th class="col-sm-1">Account Type</th>
+                    <th class="col-sm-1">Account Owner</th>
+                    <th class="col-sm-1">Last Updated</th>
+                    <th class="col-sm-1"></th>
                 </tr>
-            <% end %>
-            <tr>
-                <td></td>
-                <td><p class="total">Total: $<%= number_with_precision(@total, :precision => 0, :delimiter => ',') %></p></td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <%= submit_tag "Update Values", class: "btn btn-primary" %>
-<% end %>
+                </thead>
+                <tbody>
+                <% @accounts.each do |account| %>
+                    <tr>
+                        <td><%= link_to account.name, account %></td>
+                        <td><%= label :value, "$" %>
+                            <div style="display: inline-block;">
+                                <%= text_field :value, account.id, :value => account.displayed_value, :class => "form-control" %></div>
+                        </td>
+                        <td>
+                            <%= account.account_type.description %>
+                        </td>
+                        <td>
+                            <%= account.account_owner.description if account.account_owner %>
+                        </td>
+                        <td><%= account.updated %></td>
+                        <td><%= link_to "Edit", edit_account_path(account) %> <%= link_to "Remove", account, method: :delete, data: {confirm: "Are you sure?"} %></td>
+                    </tr>
+                <% end %>
+                <tr>
+                    <td></td>
+                    <td><p class="total">Total:
+                        $<%= number_with_precision(@total, :precision => 0, :delimiter => ',') %></p></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <%= submit_tag "Update Values", class: "btn btn-primary" %>
+        </div>
+    <% end %>

@@ -1,12 +1,9 @@
 class AccountHistoryController < ApplicationController
+  include Common
 
   def form
     @accounts = Account.all.sort.map { |acc| [acc.name, acc.id] }
-    @account_types = AccountType.all.sort_by { |at| at.description }
-                         .map { |at| [at.description, at.id] }
-    @account_owners = AccountOwner.all.sort_by { |at| at.description }
-                          .map { |at| [at.description, at.id] }
-    @retirement_options = [['Retirement Only', :retirement_only], ['Non-Retirement Only', :non_retirement_only]]
+    init_account_category_selects
   end
 
   def view
@@ -16,7 +13,7 @@ class AccountHistoryController < ApplicationController
       intervals = Integer(params[:intervals]) unless params[:intervals].empty?
       interval_size = Integer(params[:interval_size]) unless params[:interval_size].empty?
     rescue ArgumentError
-      flash[:error] = "Invalid number entered."
+      flash[:warn] = "Invalid number entered."
       redirect_to action: 'form'
     end
     if params[:account_id].empty? && params[:account_type_id].empty? && params[:account_owner_id].empty?

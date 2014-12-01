@@ -1,10 +1,5 @@
 class AccountsController < ApplicationController
-  before_filter :init_selections, :only => [:new, :edit, :index]
-
-  def init_selections
-    @account_types = AccountType.all.sort_by { |at| at.description }
-    @account_owners = AccountOwner.all.sort_by { |at| at.description }
-  end
+  include Common
 
   def new
     @account = Account.new
@@ -22,8 +17,13 @@ class AccountsController < ApplicationController
   end
 
   def index
-    @accounts = Account.all.sort
+    @accounts = apply_filters
     @total = @accounts.inject(0) { |sum, acct| sum + acct.value}
+    @selected_retirement = params[:retirement]
+    @selected_account_owner_id = params[:account_owner_id]
+    @selected_account_type_id = params[:account_type_id]
+
+    init_account_category_selects
   end
 
   def show
@@ -65,6 +65,27 @@ class AccountsController < ApplicationController
   end
 
   private
+
+  def apply_filters
+    select_string = '1=1 '
+    query_params = []
+    unless params[:account_type_id].blank?
+      select_string += ' AND account_type_id = ?'
+      query_params << params[:account_type_id]
+    end
+    unless params[:account_owner_id].blank?
+      select_string += ' AND account_owner_id = ?'
+      query_params << params[:account_owner_id]
+    end
+    if params[:retirement] == "retirement_only"
+      select_string += ' AND account_types.retirement = true '
+    end
+    if params[:retirement] == "non_retirement_only"
+      select_string += ' AND account_types.retirement = false '
+    end
+    Account.joins(:account_type)
+                      .where(select_string, *query_params).sort_by { |a| a.name }
+  end
 
   def account_params
     params.require(:account).permit(:name, :value)
