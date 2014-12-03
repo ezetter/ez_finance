@@ -47,8 +47,8 @@ class AccountsController < ApplicationController
 
   def destroy
     account = Account.find(params[:id])
-    account.delete
-    delete_history(account)
+    Account.delete(params[:id])
+    AccountHistory.destroy_all(:account => account)
     redirect_to action: 'index'
   end
 
@@ -110,26 +110,9 @@ class AccountsController < ApplicationController
 
     result = account.save
     if result
-      save_history(account)
+      AccountHistory.save_history(account)
     end
     result
   end
 
-  def save_history(account)
-    history = AccountHistory.where('date_changed=? AND account_id=?', account.updated, account)[0]
-    unless history
-      history = AccountHistory.new
-      history.account = account
-      history.date_changed = account.updated
-    end
-    history.historical_value = "#{account.value}.#{account.value_fractional}".to_f
-    history.save
-  end
-
-  def delete_history(account)
-    history = AccountHistory.where('date_changed=? AND account_id=?', account.updated, account)
-    history.each do |h|
-      h.delete
-    end
-  end
 end
