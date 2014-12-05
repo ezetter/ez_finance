@@ -1,6 +1,0 @@
-<h1><%= @displayed%></h1>
-<% @historical_totals.each do |h| %>
-    <p>
-    <%= "#{h[0]}: $#{number_with_precision(h[1], :precision => 2, :delimiter => ',')}" %>
-    </p>
-<% end %>

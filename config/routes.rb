@@ -3,10 +3,7 @@ Rails.application.routes.draw do
   resources :accounts
   resources :account_types
   resources :account_owners
-
-  get 'account_history/form' => 'account_history#form'
-
-  get 'account_history/view' => 'account_history#view'
+  resources :account_history, :only => [:index]
 
   post 'accounts/bulk_update' => 'accounts#bulk_update'
   # The priority is based upon order of creation: first created -> highest priority.
