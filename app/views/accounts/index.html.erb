@@ -6,10 +6,11 @@
         <%= select_tag(:retirement, options_for_select(@retirement_options, @selected_retirement), {:prompt => 'Retirement and Non-Retirement', :class => "form-control"}) %>
         <button type="submit" class="btn btn-primary">Filter</button>
     <% end %>
+    <hr>
     <%= form_tag controller: "accounts", action: "bulk_update" do %>
 
         <div class="table-responsive">
-            <table class="table table-condensed">
+            <table class="table table-condensed table-hover">
                 <thead>
                 <tr>
                     <th class="col-sm-1">Account Name</th>

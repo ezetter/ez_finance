@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-
+        <div class="spacer5"></div>
         <div class="form-group">
             <%= label_tag "Filters" %>
             <%= select_tag(:account_id, options_for_select(@accounts), {:prompt => 'All accounts', :class => "form-control"}) %>
@@ -26,9 +26,23 @@
         <%= submit_tag "View History", class: "btn btn-primary" %>
     <% end %>
 </div>
+<hr>
+<div class="table-responsive">
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th class="col-sm-1">Account Name</th>
+            <th class="col-sm-5">Value</th>
+        </tr>
+        </thead>
+        <tbody>
 
-<% @historical_totals.each do |h| %>
-    <p>
-    <%= "#{h[0]}: $#{number_with_precision(h[1], :precision => 2, :delimiter => ',')}" %>
-    </p>
-<% end %>
+        <% @historical_totals.each do |h| %>
+            <tr>
+                <td><%= "#{h[0]}" %></td>
+                <td><%= "$#{number_with_precision(h[1], :precision => 2, :delimiter => ',')}" %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>
