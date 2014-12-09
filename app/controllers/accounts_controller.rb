@@ -32,6 +32,7 @@ class AccountsController < ApplicationController
 
   def edit
     @account = Account.find(params[:id])
+    init_account_category_selects
   end
 
   def update

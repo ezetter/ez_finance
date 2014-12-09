@@ -5,7 +5,7 @@ RSpec.describe AccountsController, :type => :controller do
     it 'deletes the account' do
       account = Account.new(name: 'Test', value: 100, value_fractional: 0)
       account.save
-      expect{delete :destroy, {:id => account.id}}.to change(Account, :count).by(-1)
+      expect { delete :destroy, {:id => account.id} }.to change(Account, :count).by(-1)
     end
 
     it 'deletes the history' do
@@ -15,6 +15,15 @@ RSpec.describe AccountsController, :type => :controller do
       expect(AccountHistory.count).to eq(1)
       delete :destroy, {:id => account.id}
       expect(AccountHistory.count).to eq(0)
+    end
+  end
+
+  describe '#edit' do
+    it 'renders the edit template' do
+      account = Account.new(name: 'Test', value: 100, value_fractional: 0)
+      account.save
+      get :edit, {:id => account.id}
+      expect(response).to render_template(:edit)
     end
   end
 end

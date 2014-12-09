@@ -20,6 +20,9 @@ gem 'pry-rails', group: :development
 
 gem 'haml-rails'
 
-group :development, :test do
+
+group :test do
   gem 'rspec-rails', '~> 3.0.0'
+  gem 'database_cleaner'
+  gem 'capybara'
 end
