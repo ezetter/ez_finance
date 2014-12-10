@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141129031559) do
+ActiveRecord::Schema.define(version: 20141210163251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20141129031559) do
     t.decimal  "historical_value"
     t.datetime "date_changed"
   end
+
+  add_index "account_history", ["account_id"], name: "index_account_history_on_account_id", using: :btree
 
   create_table "account_owners", force: true do |t|
     t.string  "name",                  null: false
