@@ -1,6 +1,7 @@
 class Account < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
 
+  has_many :account_history, dependent: :destroy
   belongs_to :account_type
   belongs_to :account_owner
 

@@ -47,9 +47,7 @@ class AccountsController < ApplicationController
   end
 
   def destroy
-    account = Account.find(params[:id])
-    Account.delete(params[:id])
-    AccountHistory.destroy_all(:account => account)
+    Account.destroy(params[:id])
     redirect_to action: 'index'
   end
 
