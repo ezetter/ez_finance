@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+AccountType.create(description: 'Brokerage', retirement: false)
+AccountType.create(description: 'Checking', retirement: false)
+AccountType.create(description: 'Savings', retirement: false)
+AccountType.create(description: 'Money Market', retirement: false)
+AccountType.create(description: 'Traditional Ira', retirement: true)
+AccountType.create(description: 'Roth Ira', retirement: true)
+AccountType.create(description: '401K', retirement: true)
