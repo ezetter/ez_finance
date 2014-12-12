@@ -3,6 +3,7 @@ class AccountsController < ApplicationController
 
   def new
     @account = Account.new
+    init_account_category_selects
   end
 
   def create
@@ -100,12 +101,9 @@ class AccountsController < ApplicationController
     account.value_fractional = value_frac
     account.updated = Time.now
     account.name = account_name
-    if params[:account] && params[:account][:account_type_id]
-      account.account_type = AccountType.find(params[:account][:account_type_id])
-    end
-    if params[:account] && params[:account][:account_owner_id]
-      account.account_owner = AccountOwner.find(params[:account][:account_owner_id])
-    end
+    account.date_opened = params[:account][:date_opened]
+    account.account_type_id = params[:account][:account_type_id]
+    account.account_owner_id = params[:account][:account_type_id]
 
     result = account.save
     if result

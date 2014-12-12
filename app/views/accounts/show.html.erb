@@ -10,6 +10,9 @@
                 $<%= number_with_precision(@account.value, :precision => 2, :delimiter => ',') %>
             </h1>
             <h1>
+                Opened: <%= @account.date_opened %>
+            </h1>
+            <h1>
                 Account Type: <%= @account.account_type.description %>
             </h1>
             <h1>

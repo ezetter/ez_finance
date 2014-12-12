@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210163251) do
+ActiveRecord::Schema.define(version: 20141211052203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20141210163251) do
   create_table "accounts", force: true do |t|
     t.string  "name"
     t.integer "value"
-    t.date    "start_date"
+    t.date    "date_opened"
     t.date    "updated"
     t.integer "value_fractional"
     t.integer "account_type_id"

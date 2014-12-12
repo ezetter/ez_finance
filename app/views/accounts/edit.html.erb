@@ -10,6 +10,9 @@
             <%= f.label :account_type %>
             <%= f.collection_select :account_type_id, @account_types, :id, :description %>
 
+            <%= f.label :date_opened %>
+            <%= f.text_field :date_opened %>
+
             <%= f.label :account_owner %>
             <%= f.collection_select :account_owner_id, @account_owners, :id, :description, {:include_blank => 'None'} %>
 

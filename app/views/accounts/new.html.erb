@@ -3,12 +3,15 @@
 
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
-        <%= form_for(@account) do |f| %>
+        <%= form_for @account, :html => {:role => "form"} do |f| %>
             <%= f.label :name %>
             <%= f.text_field :name %>
 
             <%= f.label :account_type %>
-            <%= f.select :account_type_id, options_from_collection_for_select(@account_types, "id", "description") %>
+            <%= f.collection_select :account_type_id, @account_types, :id, :description %>
+
+            <%= f.label :date_opened %>
+            <%= f.text_field :date_opened %>
 
             <%= f.label :account_owner %>
             <%= f.collection_select :account_owner_id, @account_owners, :id, :description, {:include_blank => 'None'} %>
