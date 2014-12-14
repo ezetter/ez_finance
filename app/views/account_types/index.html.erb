@@ -1,6 +1,28 @@
 <% provide(:title, 'Account Types') %>
+<div class="container">
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th class="col-sm-1">Description</th>
+            <th class="col-sm-1">Retirement?</th>
+            <th class="col-sm-5"></th>
+        </tr>
+        </thead>
+        <tbody>
 
-<% @account_types.each do |account_type| %>
-    <h4><%= account_type.description %> : <%= account_type.retirement %>
-        <%= link_to "Edit", edit_account_type_path(account_type) %> <%= link_to "Delete", account_type, method: :delete, data: {confirm: "Are you sure?"} %></h4>
-<% end %>
+        <% @account_types.each do |account_type| %>
+            <tr>
+                <td><%= account_type.description %></td>
+                <td><%= account_type.retirement %></td>
+                <td>
+                    <ul class="list-inline" style="margin: 0;">
+                        <li><%= button_to "Edit", edit_account_type_path(account_type), :method => "get", class: "btn btn-primary btn-xs", style: "width: 100px;" %></li>
+                        <li><%= button_to "Delete", edit_account_type_path(account_type), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-primary btn-xs", style: "width: 100px;" %></li>
+                    </ul>
+                </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+
+</div>
