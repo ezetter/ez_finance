@@ -1,18 +1,4 @@
 <% provide(:title, 'Add Account Type') %>
 <h1>Add Account Type</h1>
 
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <%= form_for(@account_type) do |f| %>
-            <%= f.label :description %>
-            <%= f.text_field :description %>
-            <div class="checkbox">
-                <label>
-                    <%= f.check_box :retirement %> <b>Retirement?</b>
-                </label>
-            </div>
-
-            <%= f.submit "Create Account Type", class: "btn btn-primary" %>
-        <% end %>
-    </div>
-</div>
+<%= render :partial => "account_types_form" %>
