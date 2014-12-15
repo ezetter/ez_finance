@@ -1,6 +1,24 @@
 <% provide(:title, 'Account Owners') %>
+<table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+        <th class="col-sm-2">Name</th>
+        <th class="col-sm-1">Joint?</th>
+        <th class="col-sm-5"></th>
+    </tr>
+    </thead>
+    <tbody>
 
-<% @account_owners.each do |account_owner| %>
-    <h4><%= account_owner.description %>
-        <%= link_to "Edit", edit_account_owner_path(account_owner) %> <%= link_to "Delete", account_owner, method: :delete, data: {confirm: "Are you sure?"} %></h4>
-<% end %>
+    <% @account_owners.each do |account_owner| %>
+        <tr>
+            <td><%= account_owner.description %></td>
+            <td><%= account_owner.joint %></td>
+            <td><ul class="list-inline" style="margin: 0;">
+                <li><%= link_to "Edit", edit_account_owner_path(account_owner) %></li>
+                <li><%= link_to "Delete", account_owner, method: :delete, data: {confirm: "Are you sure?"} %></li>
+            </ul></td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>
+<%= button_to "Create New Account Owner", new_account_owner_path, :method => "get", class: "btn btn-primary", style: "width: 200px;" %>
