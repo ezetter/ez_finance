@@ -7,6 +7,7 @@ require 'rspec/rails'
 require 'database_cleaner'
 
 DatabaseCleaner.strategy = :truncation
+Rails.application.load_seed
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

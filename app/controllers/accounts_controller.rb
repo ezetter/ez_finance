@@ -8,8 +8,7 @@ class AccountsController < ApplicationController
 
   def create
     @account = Account.new
-    value_int, value_frac = value_parts(params[:account][:value])
-    if save_account(@account, value_int, value_frac, params[:account][:name])
+    if Account.save_account(@account, params[:account])
       flash[:notice] = 'Account created!'
       redirect_to action: 'index'
     else
@@ -38,8 +37,7 @@ class AccountsController < ApplicationController
 
   def update
     account = Account.find(params[:id])
-    value_int, value_frac = value_parts(params[:account][:value])
-    if save_account(account, value_int, value_frac, params[:account][:name])
+    if Account.save_account(account,params[:account])
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
     else
@@ -55,10 +53,7 @@ class AccountsController < ApplicationController
   def bulk_update
     params[:value].each do |k, v|
       account = Account.find(k)
-      value_int, value_frac = value_parts(v)
-      unless account.value == value_int && account.value_fractional == value_frac
-        save_account(account, value_int, value_frac)
-      end
+      Account.save_account(account, {:value => v})
     end
     flash[:notice] = 'Accounts updated!'
     redirect_to action: 'index'
@@ -89,27 +84,6 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(:name, :value)
-  end
-
-  def value_parts(value_string)
-    value_parts = value_string.gsub(',','').split('.')
-    return value_parts[0].to_i, value_parts[1].to_i
-  end
-
-  def save_account(account, value_int, value_frac, account_name = account.name)
-    account.value = value_int
-    account.value_fractional = value_frac
-    account.updated = Time.now
-    account.name = account_name
-    account.date_opened = params[:account][:date_opened]
-    account.account_type_id = params[:account][:account_type_id]
-    account.account_owner_id = params[:account][:account_type_id]
-
-    result = account.save
-    if result
-      AccountHistory.save_history(account)
-    end
-    result
   end
 
 end

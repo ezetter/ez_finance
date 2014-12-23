@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature 'User updates an account' do
+feature 'User manages an account' do
   before :each do
     DatabaseCleaner.clean
     Rails.application.load_seed

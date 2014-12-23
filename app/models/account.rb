@@ -15,4 +15,31 @@ class Account < ActiveRecord::Base
     end
   end
 
+  def self.save_account(account, params)
+    value_int, value_frac = value_parts(params[:value])
+    account.value = value_int
+    account.value_fractional = value_frac
+    account.updated = Time.now
+    account.name = params[:name]
+    account.date_opened = params[:date_opened]
+    account.account_type_id = params[:account_type_id]
+    account.account_owner_id = params[:account_owner_id]
+    result = true
+    if account.changed?
+      result = account.save
+      if result
+        AccountHistory.save_history(account)
+      end
+    end
+    result
+  end
+
+  private
+
+  def self.value_parts(value_string)
+    value_parts = value_string.gsub(',', '').split('.')
+    return value_parts[0].to_i, value_parts[1].to_i
+  end
+
+
 end
