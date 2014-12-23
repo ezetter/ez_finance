@@ -20,11 +20,14 @@ feature 'User manages an account' do
   end
 
   scenario 'they create the account' do
+    account_owner_1 = AccountOwner.new(name: 'Joe', joint: 'false')
+    account_owner_1.save
     visit new_account_path
     fill_in "Name", :with => "Test2"
     fill_in "Value", :with => "200.50"
     fill_in "Date opened", :with => "2014-12-10"
     select('Brokerage')
+    select('Joe')
     click_button "Save Account"
     expect(Account.first.name).to eq('Test2')
     expect(Account.first.value).to eq(200)
@@ -33,7 +36,9 @@ feature 'User manages an account' do
   end
 
   scenario 'they update the account' do
-    account = Account.new(name: 'Test', value: 100, value_fractional: 0)
+    account_owner_1 = AccountOwner.new(name: 'Joe', joint: 'false')
+    account_owner_1.save
+    account = Account.new(name: 'Test', value: 100, value_fractional: 0, account_owner: account_owner_1)
     account.save
     visit edit_account_path(account)
     fill_in "Name", :with => "Test2"
