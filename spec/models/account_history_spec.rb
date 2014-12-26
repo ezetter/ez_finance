@@ -14,10 +14,8 @@ RSpec.describe Account, :type => :model do
       @account_owner_1.save
       account_owner_2 = AccountOwner.new(name: 'Joe and Mary', joint: 'true')
       account_owner_2.save
-      @account_1 = Account.new
-      Account.save_account(@account_1, {name: 'Test', value: '100', account_type_id: @account_type_1.id, account_owner_id: @account_owner_1.id})
-      account_2 = Account.new
-      Account.save_account(account_2, {name: 'Test2', value: '200', account_type_id: @account_type_2.id, account_owner_id: account_owner_2.id})
+      @account_1 = Account.build_and_save_account({name: 'Test', value: '100', account_type_id: @account_type_1.id, account_owner_id: @account_owner_1.id})
+      Account.build_and_save_account({name: 'Test2', value: '200', account_type_id: @account_type_2.id, account_owner_id: account_owner_2.id})
     end
 
     context 'when no parameters are passed' do

@@ -16,7 +16,6 @@ RSpec.describe AccountsController, :type => :controller do
     it 'deletes the history' do
       account = Account.new(name: 'Test', value: 100, value_fractional: 0)
       account.save
-      AccountHistory.save_history(account)
       expect(AccountHistory.count).to eq(1)
       delete :destroy, {:id => account.id}
       expect(AccountHistory.count).to eq(0)

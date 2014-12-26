@@ -1,9 +1,11 @@
 class Account < ActiveRecord::Base
-  include ActionView::Helpers::NumberHelper
+  after_save :save_history
 
   has_many :account_history, dependent: :destroy
   belongs_to :account_type
   belongs_to :account_owner
+
+  include ActionView::Helpers::NumberHelper
 
   def displayed_value
     if self.value_fractional > 0
@@ -15,31 +17,23 @@ class Account < ActiveRecord::Base
     end
   end
 
-  def self.save_account(account, params)
-    value_int, value_frac = value_parts(params[:value])
-    account.value = value_int
-    account.value_fractional = value_frac
-    account.updated = Time.now
-    account.name = params[:name]
-    account.date_opened = params[:date_opened]
-    account.account_type_id = params[:account_type_id]
-    account.account_owner_id = params[:account_owner_id]
-    result = true
-    if account.changed?
-      result = account.save
-      if result
-        AccountHistory.save_history(account)
-      end
-    end
-    result
+  def self.build_and_save_account(params, account=nil)
+    account = Account.new(params) unless account
+    params[:value], params[:value_fractional] = value_parts(params[:value])
+    params[:updated] = Time.now
+    account.update(params)
+    return account
   end
 
   private
+
+  def save_history
+    AccountHistory.save_history(self)
+  end
 
   def self.value_parts(value_string)
     value_parts = value_string.gsub(',', '').split('.')
     return value_parts[0].to_i, value_parts[1].to_i
   end
-
 
 end

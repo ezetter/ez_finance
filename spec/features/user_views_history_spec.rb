@@ -11,14 +11,12 @@ feature 'User views account history' do
     account_owner_2 = AccountOwner.new(name: 'Joe and Mary', joint: 'true')
     account_owner_2.save
     Timecop.freeze(Time.local(2014, 10, 1, 12, 0, 0)) do
-      account_1 = Account.new
-      Account.save_account(account_1, {name: 'Test Account', value: '100', account_type_id: account_type_1.id, account_owner_id: account_owner_1.id})
-      account_2 = Account.new
-      Account.save_account(account_2, {name: 'Test Account2', value: '200', account_type_id: account_type_2.id, account_owner_id: account_owner_2.id})
+      Account.build_and_save_account({name: 'Test Account', value: '100', account_type_id: account_type_1.id, account_owner_id: account_owner_1.id})
+      Account.build_and_save_account({name: 'Test Account2', value: '200', account_type_id: account_type_2.id, account_owner_id: account_owner_2.id})
     end
     Timecop.freeze(Time.local(2014, 10, 5, 12, 0, 0)) do
-      account_1 = Account.first
-      Account.save_account(account_1, {name: 'Test Account', value: '500', account_type_id: account_type_1.id, account_owner_id: account_owner_1.id})
+      account = Account.first
+      Account.build_and_save_account({name: 'Test Account', value: '500', account_type_id: account_type_1.id, account_owner_id: account_owner_1.id}, account)
     end
 
   end

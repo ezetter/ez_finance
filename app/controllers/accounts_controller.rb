@@ -7,8 +7,8 @@ class AccountsController < ApplicationController
   end
 
   def create
-    @account = Account.new
-    if Account.save_account(@account, params[:account])
+    @account = Account.build_and_save_account(account_params)
+    if @account.valid?
       flash[:notice] = 'Account created!'
       redirect_to action: 'index'
     else
@@ -37,7 +37,8 @@ class AccountsController < ApplicationController
 
   def update
     account = Account.find(params[:id])
-    if Account.save_account(account,params[:account])
+    account = Account.build_and_save_account(account_params, account)
+    if account.save
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
     else
@@ -53,7 +54,7 @@ class AccountsController < ApplicationController
   def bulk_update
     params[:value].each do |k, v|
       account = Account.find(k)
-      Account.save_account(account, {:value => v})
+      Account.build_and_save_account({:value => v}, account)
     end
     flash[:notice] = 'Accounts updated!'
     redirect_to action: 'index'
@@ -83,7 +84,7 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    params.require(:account).permit(:name, :value)
+    params.require(:account).permit(:name, :value, :date_opened, :account_type_id)
   end
 
 end
