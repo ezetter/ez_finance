@@ -27,8 +27,10 @@
                     <tr>
                       <td><%= link_to account.name, account %></td>
                       <td>
-                        <%= label :value, "$" %>
-                        <%= text_field :value, account.id, :value => account.displayed_value, :class => "input-mini" %>
+                        <div class="form-inline">
+                          <%= label :value, "$" %>
+                          <%= text_field :value, account.id, :value => account.displayed_value, :class => "form-control" %>
+                        </div>
                       </td>
                       <td>
                         <%= account.account_type.description %>
