@@ -39,5 +39,11 @@ RSpec.describe Account, :type => :model do
       account = Account.build_and_save_account({name: 'Test', value: '100'})
       expect(Account.all).to eq([account])
     end
+
+    it 'assigns the account owner' do
+      account_owner = create(:account_owner)
+      Account.build_and_save_account({name: 'Test', value: '100', account_owner: account_owner})
+      expect(Account.first.account_owner).to eq(account_owner)
+    end
   end
 end

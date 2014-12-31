@@ -36,21 +36,25 @@ RSpec.describe AccountsController, :type => :controller do
   describe '#create' do
     it 'creates the account' do
       account_type = AccountType.first
+      account_owner = create(:account_owner)
       account_params = {:value => 100,
                         :name => 'an account',
                         :date_opened => '2014-12-10',
-                        :account_type_id => account_type.id}
+                        :account_type_id => account_type.id,
+                        :account_owner_id => account_owner.id}
       post :create, {:account => account_params}
       account = Account.first
       expect(account.date_opened).to eq(Date.parse('2014-12-10'))
       expect(account.name).to eq('an account')
       expect(account.value).to eq(100)
       expect(account.account_type).to eq(account_type)
+      expect(account.account_owner).to eq(account_owner)
     end
   end
 
   describe '#update' do
     it 'updates the account' do
+      account_owner = create(:account_owner)
       account_type = AccountType.first
       account_params = {:value => 100,
                         :name => 'an account',
@@ -62,13 +66,15 @@ RSpec.describe AccountsController, :type => :controller do
       account_params = {:value => 200,
                         :name => 'another account',
                         :date_opened => '2014-12-11',
-                        :account_type_id => account_type.id}
+                        :account_type_id => account_type.id,
+                        :account_owner_id => account_owner.id}
       put :update , {:id => account.id, :account => account_params}
       account = Account.first
       expect(account.date_opened).to eq(Date.parse('2014-12-11'))
       expect(account.name).to eq('another account')
       expect(account.value).to eq(200)
       expect(account.account_type).to eq(account_type)
+      expect(account.account_owner).to eq(account_owner)
     end
   end
 end
