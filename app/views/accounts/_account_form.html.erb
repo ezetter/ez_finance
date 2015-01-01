@@ -10,7 +10,7 @@
                 </div>
                 <div class="form-group">
                     <%= f.label :account_type %>
-                    <%= f.select :account_type_id, options_for_select(@account_types, @account.account_type.id) %>
+                    <%= f.select :account_type_id, options_for_select(@account_types, @account.account_type_id) %>
                     <div class="form-group">
                     </div>
                     <%= f.label :date_opened %>
@@ -18,11 +18,11 @@
                 </div>
                 <div class="form-group">
                     <%= f.label :account_owner %>
-                    <%= f.select :account_owner_id, options_for_select(@account_owners, @account.account_owner.id), {:include_blank => 'None'} %>
+                    <%= f.select :account_owner_id, options_for_select(@account_owners, @account.account_owner_id), {:include_blank => 'None'} %>
                 </div>
                 <div class="form-group">
-                    <%= f.label :value, "Current Value" %>
-                    <%= f.text_field :value %>
+                    <%= f.label :value, "Current Value $" %>
+                    <%= f.text_field :value, :value => @account.displayed_value %>
                 </div>
                 <%= f.submit "Save Account", class: "btn btn-primary" %>
             <% end %>

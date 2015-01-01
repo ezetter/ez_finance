@@ -46,4 +46,37 @@ RSpec.describe Account, :type => :model do
       expect(Account.first.account_owner).to eq(account_owner)
     end
   end
+
+  describe '#displayed_value' do
+    context 'when value is not yet assigned' do
+      it 'returns 0.00' do
+        expect(Account.new.displayed_value).to eq('0.00')
+      end
+    end
+
+    context 'when fractional_value is not assigned' do
+      it 'returns the value formatted x.00' do
+        account = Account.new
+        account.value = 100
+        expect(account.displayed_value).to eq('100.00')
+      end
+    end
+
+    context 'when value is not assigned' do
+      it 'returns the value formatted 0.xx' do
+        account = Account.new
+        account.value_fractional = 50
+        expect(account.displayed_value).to eq('0.50')
+      end
+    end
+
+    context 'when value is assigned' do
+      it 'returns the value formatted x.xx' do
+        account = Account.new
+        account.value = 100
+        account.value_fractional = 50
+        expect(account.displayed_value).to eq('100.50')
+      end
+    end
+  end
 end

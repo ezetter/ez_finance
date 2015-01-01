@@ -8,13 +8,11 @@ class Account < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
 
   def displayed_value
-    if self.value_fractional > 0
-      value = self.value + self.value_fractional/100.0
+    self.value_fractional = 0 unless self.value_fractional
+    self.value = 0 unless self.value
+    value = self.value + self.value_fractional/100.0
 
-      number_with_precision(value, :precision => 2, :delimiter => ',')
-    else
-      number_with_precision(self.value, :precision => 0, :delimiter => ',')
-    end
+    number_with_precision(value, :precision => 2, :delimiter => ',')
   end
 
   def self.build_and_save_account(params, account=nil)
