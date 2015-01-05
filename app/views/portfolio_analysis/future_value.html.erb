@@ -19,16 +19,22 @@
     <tr>
       <th>Year</th>
       <th>Date</th>
-      <th>Value</th>
+      <th>Scenario 1</th>
+      <% if params[:show_scenario_2] %>
+          <th>Scenario 2</th>
+      <% end %>
     </tr>
     </thead>
     <tbody>
 
-    <% @portfolio_analysis.annual_future_value.each do |fv| %>
+    <% @portfolio_analysis_1.annual_future_value.each_with_index do |fv, i| %>
         <tr>
           <td><%= "#{fv[:year]}" %></td>
           <td><%= "#{fv[:date].strftime("%Y-%m-%d")}" %></td>
           <td><%= "$#{number_with_precision(fv[:value], :precision => 2, :delimiter => ',')}" %></td>
+          <% if params[:show_scenario_2] %>
+              <td><%= "$#{number_with_precision(@portfolio_analysis_2.annual_future_value[i][:value], :precision => 2, :delimiter => ',')}" %></td>
+          <% end %>
         </tr>
     <% end %>
     </tbody>

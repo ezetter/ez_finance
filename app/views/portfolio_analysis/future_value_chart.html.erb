@@ -8,8 +8,9 @@
         data: {
             x: 'x',
             columns: [
-                    ['x'].concat(<%= raw @portfolio_analysis.future_value_years.to_json %>),
-                ['Value'].concat(<%= raw @portfolio_analysis.future_value_values.to_json %>)
+                ['x'].concat(<%= raw @portfolio_analysis_1.future_value_years.to_json %>),
+                ['Scenario 1'].concat(<%= raw @portfolio_analysis_1.future_value_values.to_json %>)
+
             ]
         },
         axis: {
@@ -32,5 +33,11 @@
         }
 
     });
-
+    <% if params[:show_scenario_2] %>
+    chart.load({
+        columns: [
+            ['Scenario 2'].concat(<%= raw @portfolio_analysis_2.future_value_values.to_json %>)
+        ]
+    });
+    <% end %>
 </script>

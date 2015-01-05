@@ -2,13 +2,35 @@
     <div class='row'>
       <div class='col-md-12'>
         <div class="form-group">
-          <%= label_tag :rate, "Annual Growth Rate", :class => "control-label" %>
-          <%= text_field_tag :rate, params[:rate], :class => "form-control input-sm" %>
-          <%= label_tag :payment, "Annual Payment", :class => "control-label" %>
-          <%= text_field_tag :payment, params[:payment], :class => "form-control input-sm" %>
+          <b>Scenario 1:</b>
+          <%= label_tag :rate_1, "Annual Growth Rate", :class => "control-label" %>
+          <%= text_field_tag :rate_1, @portfolio_analysis_1.rate, :class => "form-control input-sm" %>
+          <%= label_tag :payment_1, "Annual Payment", :class => "control-label" %>
+          <%= text_field_tag :payment_1, @portfolio_analysis_1.payment, :class => "form-control input-sm" %>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-12'>
+        <div class="form-group">
+          <b>Scenario 2:</b>
+          <%= label_tag :rate_2, "Annual Growth Rate", :class => "control-label" %>
+          <%= text_field_tag :rate_2, @portfolio_analysis_2.rate, :class => "form-control input-sm" %>
+          <%= label_tag :payment_2, "Annual Payment", :class => "control-label" %>
+          <%= text_field_tag :payment_2, @portfolio_analysis_2.payment, :class => "form-control input-sm" %>
+          <div class="checkbox" style="margin: 5px">
+            <%= check_box_tag :show_scenario_2, true, params[:show_scenario_2] %><b> Show</b>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-12'>
+        <div class="form-group">
           <%= label_tag :periods, "Years", :class => "control-label" %>
-          <%= text_field_tag :periods, params[:periods], :class => "form-control input-sm" %>
-          <%= select_tag(:view, options_for_select([["Table View", :table] , ["Chart View", :chart]], params[:view]), {:class => "form-control"}) %>
+          <%= text_field_tag :periods, @portfolio_analysis_1.periods, :class => "form-control input-sm" %>
+          <%= select_tag(:view, options_for_select([["Table View", :table], ["Chart View", :chart]], params[:view]), {:class => "form-control"}) %>
           <%= submit_tag "View Future Value", class: "btn btn-primary" %>
         </div>
       </div>
