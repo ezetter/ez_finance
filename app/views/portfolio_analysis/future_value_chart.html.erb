@@ -1,0 +1,36 @@
+<% provide(:title, "Portfolio Future Value") %>
+<%= render :partial => "fv_form" %>
+
+<div id="chart"></div>
+<script>
+    var chart = c3.generate({
+        bindto: '#chart',
+        data: {
+            x: 'x',
+            columns: [
+                    ['x'].concat(<%= raw @portfolio_analysis.future_value_years.to_json %>),
+                ['Value'].concat(<%= raw @portfolio_analysis.future_value_values.to_json %>)
+            ]
+        },
+        axis: {
+            y: {
+                label: {
+                    text: 'Value',
+                    position: 'outer-middle'
+                },
+                tick: {
+                    format: d3.format("$,")
+                }
+            },
+            x: {
+                label: {
+                    text: 'Year',
+                    position: 'outer-center'
+                }
+            }
+
+        }
+
+    });
+
+</script>

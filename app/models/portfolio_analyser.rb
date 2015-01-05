@@ -1,7 +1,7 @@
 class PortfolioAnalyser
   include ActiveModel::Model
 
-  attr_accessor :present_value, :rate, :payment, :periods
+  attr_accessor :present_value, :rate, :payment, :periods, :annual_future_value
 
   def initialize(attributes={})
     attributes[:rate] ||= 0.07
@@ -11,10 +11,15 @@ class PortfolioAnalyser
     @rate = attributes[:rate].to_f
     @payment = attributes[:payment].to_f
     @periods = attributes[:periods].to_i
+    @annual_future_value = calc_annual_future_value
   end
 
-  def annual_future_value
-    @annual_future_value ||= calc_annual_future_value
+  def future_value_values
+    @annual_future_value.map{|d| d[:value].round}
+  end
+
+  def future_value_years
+    @annual_future_value.map{|d| d[:date].strftime("%Y").to_i}
   end
 
   private

@@ -1,4 +1,4 @@
-<% provide(:title, "Analysis") %>
+<% provide(:title, "Portfolio Future Value") %>
 <style>
     .table {
         width: 30%
@@ -12,25 +12,7 @@
         width: 30%;
     }
 </style>
-
-<div class="container">
-  <%= form_tag({controller: "portfolio_analysis", action: "future_value"}, {:role => "form", method: "get", class: "form-inline"}) do %>
-      <div class='row'>
-        <div class='col-md-10'>
-          <div class="form-group">
-            <%= label_tag :rate, "Annual Growth Rate", :class => "control-label" %>
-            <%= text_field_tag :rate, params[:rate], :class => "form-control input-sm" %>
-            <%= label_tag :payment, "Annual Payment", :class => "control-label" %>
-            <%= text_field_tag :payment, params[:payment], :class => "form-control input-sm" %>
-            <%= label_tag :periods, "Years", :class => "control-label" %>
-            <%= text_field_tag :periods, params[:periods], :class => "form-control input-sm" %>
-            <%= submit_tag "View Future Value", class: "btn btn-primary" %>
-          </div>
-        </div>
-      </div>
-  <% end %>
-</div>
-
+<%= render :partial => "fv_form" %>
 <div class="table-responsive">
   <table class="table table-condensed table-striped">
     <thead>
