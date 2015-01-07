@@ -12,6 +12,7 @@
                 ['Scenario 1'].concat(<%= raw @portfolio_analysis_1.future_value_values.to_json %>)
 
             ]
+            ,type: 'spline'
         },
         axis: {
             y: {
@@ -32,12 +33,14 @@
 
         }
 
+
     });
     <% if params[:show_scenario_2] %>
     chart.load({
         columns: [
             ['Scenario 2'].concat(<%= raw @portfolio_analysis_2.future_value_values.to_json %>)
         ]
+        ,type: 'spline'
     });
     <% end %>
 </script>
