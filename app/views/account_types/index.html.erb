@@ -13,7 +13,7 @@
         <% @account_types.each do |account_type| %>
             <tr>
                 <td><%= account_type.description %></td>
-                <td><%= account_type.retirement %></td>
+                <td><%= account_type.retirement_yes_no %></td>
                 <td>
                     <ul class="list-inline" style="margin: 0;">
                         <li><%= button_to "Edit", edit_account_type_path(account_type), :method => "get", class: "btn btn-primary btn-xs", style: "width: 100px;" %></li>
