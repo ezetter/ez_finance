@@ -3,9 +3,10 @@ require "rails_helper"
 RSpec.describe PortfolioAnalysisController, :type => :controller do
 
   describe '#future_value' do
-    it 'assigns a PortfolioAnalyser' do
+    it 'assigns the PortfolioAnalysers for each scenario' do
       get :future_value
-      expect(assigns(:portfolio_analysis)).to be_a(PortfolioAnalyser)
+      expect(assigns(:portfolio_analysis_1)).to be_a(PortfolioAnalyser)
+      expect(assigns(:portfolio_analysis_2)).to be_a(PortfolioAnalyser)
     end
 
     context 'when chart is selected as the view' do
