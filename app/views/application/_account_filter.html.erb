@@ -1,0 +1,7 @@
+<div class="form-group">
+  <%= label_tag "Filters" %>
+  <%= select_tag(:account_id, options_for_select(@accounts, params[:account_id]), {:prompt => 'All accounts', :class => "form-control"}) %>
+  <%= select_tag :account_type_id, options_for_select(@account_types, params[:account_type_id]), {:prompt => 'All types', :class => "form-control"} %>
+  <%= select_tag :account_owner_id, options_for_select(@account_owners, params[:account_owner_id]), {:prompt => 'All owners', :class => "form-control"} %>
+  <%= select_tag :retirement, options_for_select(@retirement_options, params[:retirement]), {:prompt => 'Retirement and Non-Retirement', :class => "form-control"} %>
+</div>

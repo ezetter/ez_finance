@@ -23,6 +23,40 @@ class Account < ActiveRecord::Base
     return account
   end
 
+  def self.get_filter(params)
+    select_string = '1=1 '
+    query_params = []
+    unless params[:account_id].blank?
+      select_string += ' AND accounts.id = ?'
+      query_params << params[:account_id]
+    end
+    unless params[:account_type_id].blank?
+      select_string += ' AND accounts.account_type_id = ?'
+      query_params << params[:account_type_id]
+    end
+    unless params[:account_owner_id].blank?
+      select_string += ' AND accounts.account_owner_id = ?'
+      query_params << params[:account_owner_id]
+    end
+    if params[:retirement] == "retirement_only"
+      select_string += ' AND account_types.retirement = true '
+    end
+    if params[:retirement] == "non_retirement_only"
+      select_string += ' AND account_types.retirement = false '
+    end
+    return select_string, query_params
+  end
+
+  def self.filtered_accounts(params)
+    select_string, query_params = get_filter(params)
+    if select_string.strip == '1=1'
+      Account.all
+    else
+      Account.joins(:account_type)
+          .where(select_string, *query_params).sort_by { |h| h.id }
+    end
+  end
+
   private
 
   def save_history

@@ -15,27 +15,8 @@ class AccountHistory < ActiveRecord::Base
   end
 
   def self.get_history(params = {})
-    select_string = '1=1 '
-    query_params = []
-    unless params[:account_id].blank?
-      select_string += ' AND account_id = ?'
-      query_params << params[:account_id]
-    end
-    unless params[:account_type_id].blank?
-      select_string += ' AND accounts.account_type_id = ?'
-      query_params << params[:account_type_id]
-    end
-    unless params[:account_owner_id].blank?
-      select_string += ' AND accounts.account_owner_id = ?'
-      query_params << params[:account_owner_id]
-    end
-    if params[:retirement] == "retirement_only"
-      select_string += ' AND account_types.retirement = true '
-    end
-    if params[:retirement] == "non_retirement_only"
-      select_string += ' AND account_types.retirement = false '
-    end
-    if select_string == '1==1 '
+    select_string, query_params = Account.get_filter(params)
+    if query_params.size == '1=1 '
       AccountHistory.all
     else
       return AccountHistory.joins(account: :account_type)

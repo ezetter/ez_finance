@@ -2,47 +2,40 @@
 <h1>Account History</h1>
 
 <div class="container">
-    <%= form_tag({controller: "account_history", action: "index"}, {:role => "form", method: "get", class: "form-inline"}) do %>
-        <%= hidden_field_tag :show_history, 'true' %>
-        <div class='row'>
-            <div class='col-md-8'>
-                <div class="form-group">
-                    <%= label_tag :intervals, "Number of Intervals", :class => "control-label" %>
-                    <%= number_field_tag :intervals, @intervals, :class => "form-control input-sm" %>
-                    <%= label_tag :interval_size, "Interval Size", :class => "control-label" %>
-                    <%= number_field_tag :interval_size, @interval_size, :class => "form-control input-sm" %>
-                </div>
-            </div>
+  <%= form_tag({controller: "account_history", action: "index"}, {:role => "form", method: "get", class: "form-inline"}) do %>
+      <%= hidden_field_tag :show_history, 'true' %>
+      <div class='row'>
+        <div class='col-md-8'>
+          <div class="form-group">
+            <%= label_tag :intervals, "Number of Intervals", :class => "control-label" %>
+            <%= number_field_tag :intervals, @intervals, :class => "form-control input-sm" %>
+            <%= label_tag :interval_size, "Interval Size", :class => "control-label" %>
+            <%= number_field_tag :interval_size, @interval_size, :class => "form-control input-sm" %>
+          </div>
         </div>
-        <div class="spacer5"></div>
-        <div class="form-group">
-            <%= label_tag "Filters" %>
-            <%= select_tag(:account_id, options_for_select(@accounts, params[:account_id]), {:prompt => 'All accounts', :class => "form-control"}) %>
-            <%= select_tag :account_type_id, options_for_select(@account_types, params[:account_type_id]), {:prompt => 'All types', :class => "form-control"} %>
-            <%= select_tag :account_owner_id, options_for_select(@account_owners, params[:account_owner_id]), {:prompt => 'All owners', :class => "form-control"} %>
-            <%= select_tag :retirement, options_for_select(@retirement_options, params[:retirement]), {:prompt => 'Retirement and Non-Retirement', :class => "form-control"} %>
-        </div>
-
-        <%= submit_tag "View History", class: "btn btn-primary" %>
-    <% end %>
+      </div>
+      <div class="spacer5"></div>
+      <%= render 'account_filter' %>
+      <%= submit_tag "View History", class: "btn btn-primary" %>
+  <% end %>
 </div>
 <hr>
 <div class="table-responsive">
-    <table class="table table-condensed table-hover">
-        <thead>
-        <tr>
-            <th class="col-sm-1">Account Name</th>
-            <th class="col-sm-5">Value</th>
-        </tr>
-        </thead>
-        <tbody>
+  <table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+      <th class="col-sm-1">Account Name</th>
+      <th class="col-sm-5">Value</th>
+    </tr>
+    </thead>
+    <tbody>
 
-        <% @historical_totals.each do |h| %>
-            <tr>
-                <td><%= "#{h[0]}" %></td>
-                <td><%= "$#{number_with_precision(h[1], :precision => 2, :delimiter => ',')}" %></td>
-            </tr>
-        <% end %>
-        </tbody>
-    </table>
+    <% @historical_totals.each do |h| %>
+        <tr>
+          <td><%= "#{h[0]}" %></td>
+          <td><%= "$#{number_with_precision(h[1], :precision => 2, :delimiter => ',')}" %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>

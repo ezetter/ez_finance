@@ -15,6 +15,41 @@ RSpec.describe Account, :type => :model do
     end
   end
 
+  describe 'filtered_accounts' do
+    before do
+      Rails.application.load_seed
+      @account_type_1 = AccountType.where('retirement = true')[0]
+      @account_type_2 = AccountType.where('retirement = false')[0]
+      @account_owner_1 = AccountOwner.new(name: 'Joe', joint: 'false')
+      @account_owner_1.save
+      account_owner_2 = AccountOwner.new(name: 'Joe and Mary', joint: 'true')
+      account_owner_2.save
+      @account_1 = Account.build_and_save_account({name: 'Test', value: '100', account_type_id: @account_type_1.id, account_owner_id: @account_owner_1.id})
+      Account.build_and_save_account({name: 'Test2', value: '200', account_type_id: @account_type_2.id, account_owner_id: account_owner_2.id})
+    end
+
+    context 'when no parameters are given' do
+      it 'finds accounts based on the filters' do
+        expect(Account.filtered_accounts({}).size).to eq(2)
+      end
+    end
+
+    context 'when retirement accounts only is specified' do
+      it 'returns only retirement accounts' do
+        expect(Account.filtered_accounts( {:retirement => 'retirement_only'})).to eq([@account_1])
+      end
+    end
+
+    context 'when the account owner is specified' do
+      it 'returns only history for owners of that account' do
+        params = {:account_owner_id => @account_owner_1.id}
+        accounts  = Account.filtered_accounts(params)
+        expect(accounts).to eq([@account_1])
+      end
+    end
+
+  end
+
   describe '.build_account' do
     it 'updates the account if account passed as argument' do
       account = Account.build_and_save_account({name: 'Test', value: '100'})

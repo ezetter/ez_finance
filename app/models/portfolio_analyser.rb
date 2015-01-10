@@ -11,7 +11,7 @@ class PortfolioAnalyser
     @rate = attributes[:rate].to_f
     @payment = attributes[:payment].to_f
     @periods = attributes[:periods].to_i
-    @annual_future_value = calc_annual_future_value
+    @annual_future_value = calc_annual_future_value(attributes)
   end
 
   def future_value_values
@@ -24,8 +24,8 @@ class PortfolioAnalyser
 
   private
 
-  def calc_annual_future_value
-    @present_value ||= Account.all.inject(0) { |sum, acct| sum + acct.value}
+  def calc_annual_future_value(params)
+    @present_value ||= Account.filtered_accounts(params).inject(0) { |sum, acct| sum + acct.value}
     fv_ann = []
     (0..periods).each do |i|
       g = Math.exp(i * rate)
