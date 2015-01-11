@@ -12,6 +12,10 @@ class PortfolioAnalysisController < ApplicationController
     end
   end
 
+  def breakdown
+    @slices = Account.breakdown(params[:view])
+  end
+
   private
 
   def portfolio_analysis_params(scenario_num)

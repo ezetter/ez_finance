@@ -114,4 +114,43 @@ RSpec.describe Account, :type => :model do
       end
     end
   end
+
+  describe '.breakdown' do
+    before do
+      Rails.application.load_seed
+      @account_type_1 = AccountType.where('retirement = true')[0]
+      @account_type_2 = AccountType.where('retirement = false')[0]
+      @account_owner_1 = AccountOwner.new(name: 'Joe', joint: 'false')
+      @account_owner_1.save
+      account_owner_2 = AccountOwner.new(name: 'Joe and Mary', joint: 'true')
+      account_owner_2.save
+      @account_1 = Account.build_and_save_account({name: 'Test', value: '100', account_type_id: @account_type_1.id, account_owner_id: @account_owner_1.id})
+      Account.build_and_save_account({name: 'Test2', value: '200', account_type_id: @account_type_2.id, account_owner_id: account_owner_2.id})
+      Account.build_and_save_account({name: 'Test3', value: '300', account_type_id: @account_type_1.id, account_owner_id: @account_owner_1.id})
+    end
+
+    context 'when account is selected' do
+      it 'returns totals by account' do
+        expect(Account.breakdown('account')).to eq( [["Test", 100], ["Test2", 200], ["Test3", 300]] )
+      end
+    end
+
+    context 'when retirement status is selected' do
+      it 'returns totals by retirement status' do
+        expect(Account.breakdown('retirement')).to eq( [["retirement", 400], ["non-retirement", 200]] )
+      end
+    end
+
+    context 'when account type is selected' do
+      it 'returns totals by account type' do
+        expect(Account.breakdown('type')).to eq( [[@account_type_1.description, 400], [@account_type_2.description, 200]] )
+      end
+    end
+
+    context 'when retirement status is selected' do
+      it 'returns totals by owner' do
+        expect(Account.breakdown('owner')).to eq( [["Joe", 400], ["Joe and Mary", 200]] )
+      end
+    end
+  end
 end

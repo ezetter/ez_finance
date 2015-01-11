@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :admin, :only => [:index]
 
   get 'analysis/future' => 'portfolio_analysis#future_value'
+  get 'analysis/breakdown' => 'portfolio_analysis#breakdown'
   post 'accounts/bulk_update' => 'accounts#bulk_update'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

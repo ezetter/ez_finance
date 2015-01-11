@@ -57,6 +57,29 @@ class Account < ActiveRecord::Base
     end
   end
 
+  def self.breakdown(type)
+    case type
+      when 'retirement'
+        @slices = Account.all.group_by { |a| a.account_type.retirement ? 'retirement' : 'non-retirement' }
+        .map do |k, v|
+          [k, v.inject(0){|r, e| r + e.value}]
+        end
+      when 'type'
+        @slices = Account.all.group_by { |a| a.account_type.description}
+                      .map do |k, v|
+          [k, v.inject(0){|r, e| r + e.value}]
+        end
+      when 'owner'
+        @slices = Account.all.group_by { |a| a.account_owner.name}
+                      .map do |k, v|
+          [k, v.inject(0){|r, e| r + e.value}]
+        end
+
+      else
+        @slices = Account.all.map { |a| [a.name, a.value] }
+    end
+  end
+
   private
 
   def save_history

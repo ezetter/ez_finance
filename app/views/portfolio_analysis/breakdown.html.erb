@@ -1,0 +1,22 @@
+<style>
+    .center_div{
+        margin: 0 auto;
+        width:18% /* value of your choice which suits your alignment */
+    }
+</style>
+<% provide(:title, "Portfolio Breakdown") %>
+<h1>Portfolio Breakdown</h1>
+<div class="container center_div">
+<%= form_tag({controller: "portfolio_analysis", action: "breakdown"}, {:role => "form", method: "get", class: "form-inline"}) do %>
+<%= select_tag(:view, options_for_select([["By Account", :account], ["By Retirement Status", :retirement], ["By Account Type", :type], ["By Owner", :owner]], params[:view]), {:class => "form-control", :onchange => "this.form.submit();"}) %>
+<% end %>
+  </div>
+<div id="chart"></div>
+<script>
+    var chart = c3.generate({
+        data: {
+            columns: <%= raw @slices.to_json %>,
+            type : 'pie'
+        }
+    });
+</script>
