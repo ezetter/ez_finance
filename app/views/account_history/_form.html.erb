@@ -1,0 +1,19 @@
+<div class="container">
+  <%= form_tag({controller: "account_history", action: "index"}, {:role => "form", method: "get", class: "form-inline"}) do %>
+      <%= hidden_field_tag :load_history, 'true' %>
+      <div class='row'>
+        <div class='col-md-8'>
+          <div class="form-group">
+            <%= label_tag :intervals, "Number of Intervals", :class => "control-label" %>
+            <%= number_field_tag :intervals, @intervals, :class => "form-control input-sm" %>
+            <%= label_tag :interval_size, "Interval Size", :class => "control-label" %>
+            <%= number_field_tag :interval_size, @interval_size, :class => "form-control input-sm" %>
+            <%= select_tag(:view, options_for_select([["Table View", :table], ["Chart View", :chart]], params[:view]), {:class => "form-control"}) %>
+          </div>
+        </div>
+      </div>
+      <div class="spacer5"></div>
+      <%= render 'account_filter' %>
+      <%= submit_tag "View History", class: "btn btn-primary" %>
+  <% end %>
+</div>

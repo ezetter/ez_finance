@@ -5,12 +5,15 @@ class AccountHistoryController < ApplicationController
     @accounts = Account.all.sort.map { |acc| [acc.name, acc.id] }
     init_account_category_selects
     @historical_totals = []
-    show_history
+    load_history
+    if params[:view] == 'chart'
+      render "chart"
+    end
   end
 
   private
 
-  def show_history
+  def load_history
     begin
       @intervals = params[:intervals] ? Integer(params[:intervals]) : 30
       @interval_size = params[:interval_size] ? Integer(params[:interval_size]) : 1

@@ -1,0 +1,46 @@
+<% provide(:title, "Account History") %>
+<h1>Account History Chart</h1>
+<%= render :partial => "form" %>
+<div id="chart"></div>
+<script>
+    var chart = c3.generate({
+                bindto: '#chart',
+                data: {
+                    x: 'x',
+                    columns: [
+                        ['x'].concat(<%= raw @historical_totals.reverse.map{|a| a[0]}.to_json %>),
+                        ['Historical Values'].concat(<%= raw @historical_totals.reverse.map{|a| a[1].to_i}.to_json %>)
+
+                    ]
+                },
+                axis: {
+                    y: {
+                        label: {
+                            text: 'Value',
+                            position: 'outer-middle'
+                        },
+                        tick: {
+                            format: d3.format("$,")
+                        }
+                    },
+                    x: {
+                        type: 'timeseries',
+                        tick: {
+                            format: '%Y-%m-%d'
+                        }
+                    }
+                },
+                grid: {
+                    x: {
+                        show: true
+                    }
+                    ,
+                    y: {
+                        show: true
+                    }
+                }
+
+
+            })
+            ;
+</script>
