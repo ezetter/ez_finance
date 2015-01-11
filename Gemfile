@@ -18,7 +18,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'spring', group: :development
 gem 'pry-rails', group: :development
 
-
+gem 'rails_12factor', group: :production
 
 group :test do
   gem 'rspec-rails', '~> 3.0.0'
@@ -27,3 +27,5 @@ group :test do
   gem 'timecop'
   gem "factory_girl_rails", "~> 4.0"
 end
+
+ruby "2.1.5"
