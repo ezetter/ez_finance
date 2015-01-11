@@ -10,20 +10,24 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js">
     </script>
     <![endif]-->
+  <script>
+      $(".nav a").on("click", function () {
+          $(".nav").find(".active").removeClass("active");
+          $(this).parent().addClass("active");
+      });
+  </script>
 </head>
 <body>
 <header class="navbar navbar-fixed-top navbar-inverse">
     <div class="container">
-        <%= link_to "EZ Finance", '#', id: "logo" %>
-        <nav>
-            <ul class="nav navbar-nav pull-right">
-              <li><%= link_to "Add Account", new_account_path %></li>
-              <li><%= link_to "List Accounts", accounts_path %></li>
-              <li><%= link_to "Account History", account_history_index_path %></li>
-              <li><%= link_to "Administration", admin_index_path %></li>
-              <li><%= link_to "Analysis", analysis_future_path %></li>
+      <%= link_to "EZ Finance", accounts_path, id: "logo" %>
+      <ul class="nav nav-pills pull-right">
+        <li class="<%= 'active' if current_page?(accounts_path) %>"><%= link_to "Accounts", accounts_path %></li>
+        <li class="<%= 'active' if current_page?(new_account_path) %>"><%= link_to "Add Account", new_account_path %></li>
+        <li class="<%= 'active' if current_page?(account_history_index_path) %>"><%= link_to "Account History", account_history_index_path %></li>
+        <li class="<%= 'active' if current_page?(admin_index_path) %>"><%= link_to "Administration", admin_index_path %></li>
+        <li class="<%= 'active' if current_page?(analysis_future_path) %>"><%= link_to "Analysis", analysis_future_path %></li>
             </ul>
-        </nav>
     </div>
 </header>
 <div class="container">
