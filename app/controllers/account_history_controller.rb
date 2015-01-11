@@ -4,18 +4,16 @@ class AccountHistoryController < ApplicationController
   def index
     @accounts = Account.all.sort.map { |acc| [acc.name, acc.id] }
     init_account_category_selects
-    @intervals = 30
-    @interval_size = 1
     @historical_totals = []
-    show_history if params[:show_history]
+    show_history
   end
 
   private
 
   def show_history
     begin
-      @intervals = Integer(params[:intervals]) unless params[:intervals].empty?
-      @interval_size = Integer(params[:interval_size]) unless params[:interval_size].empty?
+      @intervals = params[:intervals] ? Integer(params[:intervals]) : 30
+      @interval_size = params[:interval_size] ? Integer(params[:interval_size]) : 1
     rescue ArgumentError
       flash[:warn] = "Invalid number entered."
       return
