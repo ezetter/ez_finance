@@ -1,8 +1,10 @@
 # EZ Finance
 
-### About
+## About
 
 An EZ way to manage your personal investments. You can add retirement, brokerage and mutual fund accounts with values. This app will allow you to filter, see totals for various account categories,etc. It also keeps track of historical values as you update those values and allows viewing that history to see your portfolio performance over time.
+
+A demo with example data is deployed to Heroku. You can visit it at [https://afternoon-woodland-7418.herokuapp.com/accounts](https://afternoon-woodland-7418.herokuapp.com/accounts).
 
 ### Portfolio Analysis
 
@@ -13,6 +15,8 @@ EZ Finance also has analysis facilities. It allows you to play with various grow
 This is a Ruby on Rails project so however you deploy and run your Rails projects is the mechanism. I haven't at this point provided any facilities within the project, e.g. Capistrano.
 
 You do need a database and should create the database the standard Rails way (e.g. rake db:create). I used PostreSQL. Other relational databases should work but are untested.
+
+This project is Heroku ready and has been deployed to Heroku. Instructions for deploying a Rails application to Heroku can be found at [https://devcenter.heroku.com/articles/getting-started-with-rails4](https://devcenter.heroku.com/articles/getting-started-with-rails4).
 
 ## Contributing
 
