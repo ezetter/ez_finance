@@ -15,10 +15,12 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem 'rails_12factor', group: :production
+
+gem 'unicorn'
+
 gem 'spring', group: :development
 gem 'pry-rails', group: :development
-
-gem 'rails_12factor', group: :production
 
 group :test do
   gem 'rspec-rails', '~> 3.0.0'
