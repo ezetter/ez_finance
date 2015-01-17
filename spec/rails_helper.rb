@@ -5,6 +5,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
 require 'database_cleaner'
+require 'devise'
 
 DatabaseCleaner.strategy = :truncation
 Rails.application.load_seed

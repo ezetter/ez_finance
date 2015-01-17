@@ -1,4 +1,5 @@
 class AccountTypesController < ApplicationController
+  before_filter :authorize_user, :only => [:create, :update, :destroy]
 
   def new
     @account_type = AccountType.new

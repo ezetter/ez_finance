@@ -1,4 +1,6 @@
 class AccountsController < ApplicationController
+  before_filter :authorize_user, :only => [:create, :update, :destroy]
+
   include Common
 
   def new

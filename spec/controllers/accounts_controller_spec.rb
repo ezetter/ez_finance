@@ -4,6 +4,7 @@ RSpec.describe AccountsController, :type => :controller do
   before :each do
     DatabaseCleaner.clean
     Rails.application.load_seed
+    allow(subject).to receive(:authorize_user).and_return(true)
   end
 
   describe '#destroy' do

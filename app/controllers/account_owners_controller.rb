@@ -1,4 +1,6 @@
 class AccountOwnersController < ApplicationController
+  before_filter :authorize_user, :only => [:create, :update, :destroy]
+
   def new
     @account_owner = AccountOwner.new
   end

@@ -1,9 +1,14 @@
 require "rails_helper"
 
 feature 'User manages an account' do
+  include Warden::Test::Helpers
+  Warden.test_mode!
+
   before :each do
     DatabaseCleaner.clean
     Rails.application.load_seed
+    user = FactoryGirl.create(:admin)
+    login_as(user, :scope => :user, :run_callbacks => false)
   end
 
   scenario 'they visit the new account page' do
@@ -51,4 +56,21 @@ feature 'User manages an account' do
     expect(Account.first.value_fractional).to eq(50)
     expect(Account.first.account_type.description).to eq('Brokerage')
   end
+
+  scenario 'they create an account type' do
+    visit new_account_type_path
+    fill_in "Description", :with => "New Type"
+    click_button "Save Account Type"
+    expect((AccountType.find_by description: 'New Type').description).to eq("New Type")
+  end
+
+  scenario 'they update an account owner' do
+    owner = AccountOwner.new(name: 'Joe', joint: 'false')
+    owner.save
+    visit edit_account_owner_path(owner.id)
+    check("account_owner_joint")
+    click_button "Save Account Owner"
+    expect((AccountOwner.find_by name: 'Joe').joint).to eq(true)
+  end
+
 end
