@@ -14,6 +14,8 @@ class AccountsController < ApplicationController
       flash[:notice] = 'Account created!'
       redirect_to action: 'index'
     else
+      init_account_category_selects
+      flash_validation_errors(@account)
       render action: 'new'
     end
   end
@@ -38,12 +40,14 @@ class AccountsController < ApplicationController
   end
 
   def update
-    account = Account.find(params[:id])
-    account = Account.build_and_save_account(account_params, account)
-    if account.save
+    @account = Account.find(params[:id])
+    @account = Account.build_and_save_account(account_params, @account)
+    if @account.save
       flash[:notice] = 'Account updated!'
       redirect_to action: 'index'
     else
+      init_account_category_selects
+      flash_validation_errors(@account)
       render action: 'edit'
     end
   end
@@ -56,7 +60,12 @@ class AccountsController < ApplicationController
   def bulk_update
     params[:value].each do |k, v|
       account = Account.find(k)
-      Account.build_and_save_account({:value => v}, account)
+      account = Account.build_and_save_account({:value => v}, account)
+      unless account.valid?
+        flash_validation_errors(account)
+        redirect_to action: 'index'
+        return
+      end
     end
     flash[:notice] = 'Accounts updated!'
     redirect_to action: 'index'

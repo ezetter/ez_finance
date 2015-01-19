@@ -7,6 +7,9 @@ class Account < ActiveRecord::Base
 
   include ActionView::Helpers::NumberHelper
 
+  validates :name, presence: true
+  validate :value_is_number
+
   def displayed_value
     self.value_fractional = 0 unless self.value_fractional
     self.value = 0 unless self.value
@@ -16,6 +19,7 @@ class Account < ActiveRecord::Base
   end
 
   def self.build_and_save_account(params, account=nil)
+    params[:raw_value] = params[:value].gsub(',', '')
     account = Account.new(params) unless account
     params[:value], params[:value_fractional] = value_parts(params[:value])
     params[:updated] = Time.now
@@ -82,13 +86,20 @@ class Account < ActiveRecord::Base
 
   private
 
+  def value_is_number
+    unless raw_value =~ /^\d+(\.\d{1,2})?$/
+      errors.add(:value, " #{raw_value} is not a number")
+    end
+  end
+
   def save_history
     AccountHistory.save_history(self)
   end
 
   def self.value_parts(value_string)
-    value_parts = value_string.gsub(',', '').split('.')
-    return value_parts[0].to_i, value_parts[1].to_i
+    int_part, frac_part = value_string.gsub(',', '').split('.')
+    frac_part = "#{frac_part}0" if !frac_part.nil? && frac_part.length == 1
+    return int_part.to_i, frac_part.to_i
   end
 
 end

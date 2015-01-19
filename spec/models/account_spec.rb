@@ -7,11 +7,34 @@ RSpec.describe Account, :type => :model do
 
   describe '#destroy' do
     it 'destroy deletes the associated history' do
-      account = Account.new(name: 'Test', value: 100, value_fractional: 0)
+      account = Account.build_and_save_account({name: 'Test', value: '100.00'})
       account.save
       expect(AccountHistory.count).to eq(1)
       account.destroy
       expect(AccountHistory.count).to eq(0)
+    end
+  end
+
+  describe '#valid?' do
+    context 'when value param is a decimal number' do
+      it 'is valid' do
+        account = Account.build_and_save_account({name: 'Test', value: '100.32'})
+        expect(account.valid?).to eq(true)
+      end
+    end
+
+    context 'when value param is an integer' do
+      it 'is valid' do
+        account = Account.build_and_save_account({name: 'Test', value: '100'})
+        expect(account.valid?).to eq(true)
+      end
+    end
+
+    context 'when value param contains an non digit' do
+      it 'is not valid' do
+        account = Account.build_and_save_account({name: 'Test', value: '100a.32'})
+        expect(account.valid?).to eq(false)
+      end
     end
   end
 
@@ -50,7 +73,7 @@ RSpec.describe Account, :type => :model do
 
   end
 
-  describe '.build_account' do
+  describe '.build_and_save_account' do
     it 'updates the account if account passed as argument' do
       account = Account.build_and_save_account({name: 'Test', value: '100'})
       expect(Account.first.value).to eq(100)

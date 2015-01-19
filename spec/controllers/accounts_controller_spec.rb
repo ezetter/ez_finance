@@ -51,6 +51,21 @@ RSpec.describe AccountsController, :type => :controller do
       expect(account.account_type).to eq(account_type)
       expect(account.account_owner).to eq(account_owner)
     end
+
+    context 'when the name is absent' do
+      it 'fails validation' do
+        account_type = AccountType.first
+        account_owner = create(:account_owner)
+        account_params = {:value => 100,
+                          :name => '',
+                          :date_opened => '2014-12-10',
+                          :account_type_id => account_type.id,
+                          :account_owner_id => account_owner.id}
+        post :create, {:account => account_params}
+        expect(response).to render_template(:new)
+
+      end
+    end
   end
 
   describe '#update' do

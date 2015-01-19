@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <%= f.label :value, "Current Value $" %>
-                    <%= f.text_field :value, :value => @account.displayed_value %>
+                    <%= f.text_field :value, :value => @account.raw_value %>
                 </div>
                 <%= f.submit "Save Account", class: "btn btn-primary" %>
             <% end %>
