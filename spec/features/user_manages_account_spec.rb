@@ -17,7 +17,7 @@ feature 'User manages an account' do
   end
 
   scenario 'they visit the edit page' do
-    account = Account.new(name: 'Test', value: 100, value_fractional: 0)
+    account = Account.build_and_save_account(name: 'Test', value: '100')
     account.save
 
     visit edit_account_path(account)
@@ -43,7 +43,7 @@ feature 'User manages an account' do
   scenario 'they update the account' do
     account_owner_1 = AccountOwner.new(name: 'Joe', joint: 'false')
     account_owner_1.save
-    account = Account.new(name: 'Test', value: 100, value_fractional: 0, account_owner: account_owner_1)
+    account = Account.build_and_save_account(name: 'Test', value: '100', account_owner: account_owner_1)
     account.save
     visit edit_account_path(account)
     fill_in "Name", :with => "Test2"

@@ -9,13 +9,13 @@ RSpec.describe AccountsController, :type => :controller do
 
   describe '#destroy' do
     it 'deletes the account' do
-      account = Account.new(name: 'Test', value: 100, value_fractional: 0)
+      account = Account.build_and_save_account(name: 'Test', value: '100')
       account.save
       expect { delete :destroy, {:id => account.id} }.to change(Account, :count).by(-1)
     end
 
     it 'deletes the history' do
-      account = Account.new(name: 'Test', value: 100, value_fractional: 0)
+      account = Account.build_and_save_account(name: 'Test', value: '100')
       account.save
       expect(AccountHistory.count).to eq(1)
       delete :destroy, {:id => account.id}
@@ -25,7 +25,7 @@ RSpec.describe AccountsController, :type => :controller do
 
   describe '#edit' do
     it 'renders the edit template' do
-      account = Account.new(name: 'Test', value: 100, value_fractional: 0)
+      account = Account.build_and_save_account(name: 'Test', value: '100')
       account.save
       get :edit, {:id => account.id}
       expect(response).to render_template(:edit)
@@ -72,14 +72,13 @@ RSpec.describe AccountsController, :type => :controller do
     it 'updates the account' do
       account_owner = create(:account_owner)
       account_type = AccountType.first
-      account_params = {:value => 100,
+      account_params = {:value => '100',
                         :name => 'an account',
                         :date_opened => '2014-12-10',
                         :account_type_id => account_type.id}
-      account = Account.new(account_params)
-      account.save
+      account = Account.build_and_save_account(account_params)
       account_type = AccountType.last
-      account_params = {:value => 200,
+      account_params = {:value => '200',
                         :name => 'another account',
                         :date_opened => '2014-12-11',
                         :account_type_id => account_type.id,

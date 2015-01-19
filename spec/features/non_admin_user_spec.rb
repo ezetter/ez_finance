@@ -28,7 +28,7 @@ feature 'Non admin user attempts to perform admin actions' do
   scenario 'they try to update an account' do
     account_owner_1 = AccountOwner.new(name: 'Joe', joint: 'false')
     account_owner_1.save
-    account = Account.new(name: 'Test', value: 100, value_fractional: 0, account_owner: account_owner_1)
+    account = Account.build_and_save_account(name: 'Test', value: '100', account_owner: account_owner_1)
     account.save
     visit edit_account_path(account)
     fill_in "Name", :with => "Test2"
